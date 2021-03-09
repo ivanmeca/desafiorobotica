@@ -1,0 +1,5 @@
+version: "3.4"
+services:
+  cyberbots:
+    image: cyberbotics/webots:R2021a-ubuntu18.04
+    restart: always
