@@ -14,5 +14,5 @@ init: ## Launch Web Bots application
 	xhost +local:root > /dev/null 2>&1
 	docker-compose run -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:rw cyberbots webots
 
-stop: ## Safely stop the environment
-	xhost -local:root > /dev/null 2>&1.
+init-bash: ## Launch bash of web bots container
+	docker-compose run cyberbots
