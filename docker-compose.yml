@@ -3,9 +3,8 @@ services:
   cyberbots:
     image: cyberbotics/webots:R2021a-ubuntu18.04
     volumes:
-      - ./controllers:/opt/controllers
-      - ./worlds:/opt/worlds
-      - ./.docker:/usr/local/webbots
+      - ./controllers:/usr/local/webots/resources/projects/robots/adept/pionner3/controllers
+      - ./worlds:/usr/local/webots/resources/projects/worlds
 
 
 
