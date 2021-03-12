@@ -117,7 +117,7 @@ int main() {
                 speed_modifier = 0.0;
             else {
                 // computes the actual distance to the obstacle, given the value returned by the sensor
-                distance = 500.0 * (1.0 - (sensor_value / MAX_SENSOR_VALUE));  // lookup table inverse.
+                distance = 5.0 * (1.0 - (sensor_value / MAX_SENSOR_VALUE));  // lookup table inverse.
 
                 // if the obstacle is close enough, we may want to turn
                 // here we compute how much this sensor will influence the direction of the robot
@@ -137,12 +137,12 @@ int main() {
             // when the robot is going forward, it will start turning in either direction when an obstacle is close enough
             case FORWARD:
                 if (wheel_weight_total[0] > WHEEL_WEIGHT_THRESHOLD) {
-                    speed[0] = 0.9 * MAX_SPEED;
-                    speed[1] = -0.9 * MAX_SPEED;
+                    speed[0] = 0.7 * MAX_SPEED;
+                    speed[1] = -0.7 * MAX_SPEED;
                     state = LEFT;
                 } else if (wheel_weight_total[1] > WHEEL_WEIGHT_THRESHOLD) {
-                    speed[0] = -0.9 * MAX_SPEED;
-                    speed[1] = 0.9 * MAX_SPEED;
+                    speed[0] = -0.7 * MAX_SPEED;
+                    speed[1] = 0.7 * MAX_SPEED;
                     state = RIGHT;
                 } else {
                     speed[0] = MAX_SPEED;
@@ -153,8 +153,8 @@ int main() {
                 // this will prevent the robot from being caught in a loop going left, then right, then left, and so on.
             case LEFT:
                 if (wheel_weight_total[0] > WHEEL_WEIGHT_THRESHOLD || wheel_weight_total[1] > WHEEL_WEIGHT_THRESHOLD) {
-                    speed[0] = 0.9 * MAX_SPEED;
-                    speed[1] = -0.9 * MAX_SPEED;
+                    speed[0] = 0.7 * MAX_SPEED;
+                    speed[1] = -0.7 * MAX_SPEED;
                 } else {
                     speed[0] = MAX_SPEED;
                     speed[1] = MAX_SPEED;
@@ -163,8 +163,8 @@ int main() {
                 break;
             case RIGHT:
                 if (wheel_weight_total[0] > WHEEL_WEIGHT_THRESHOLD || wheel_weight_total[1] > WHEEL_WEIGHT_THRESHOLD) {
-                    speed[0] = -0.9 * MAX_SPEED;
-                    speed[1] = 0.9 * MAX_SPEED;
+                    speed[0] = -0.7 * MAX_SPEED;
+                    speed[1] = 0.7 * MAX_SPEED;
                 } else {
                     speed[0] = MAX_SPEED;
                     speed[1] = MAX_SPEED;
