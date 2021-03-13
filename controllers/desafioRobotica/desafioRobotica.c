@@ -11,7 +11,7 @@
 #define MAX_SENSOR_NUMBER 8 // how many sensors are on the robot
 #define DELAY 70 // delay used for the blinking leds
 #define MAX_SENSOR_VALUE 1024 // maximal value returned by the sensors
-#define MIN_DISTANCE 1.0 // minimal distance, in meters, for an obstacle to be considered
+#define MIN_DISTANCE 0.5 // minimal distance, in meters, for an obstacle to be considered
 #define WHEEL_WEIGHT_THRESHOLD 100 // minimal weight for the robot to turn
 
 #define LEFT_WHEEL 0
@@ -24,10 +24,9 @@ typedef struct {
 } SensorData;
 // structure to store the data associated to the robot
 typedef struct {
-    double LeftWheelSpeed;
-    double LeftWheelWeight;
-    double RightWheelSpeed;
-    double RightWheelWeight;
+    double LeftWheelWeight,LeftWheelSpeed;
+    double RightWheelWeight,RightWheelSpeed;
+    int LeftBorder,RightBorder;
 }Robot;
 
 // enum to represent the state of the robot
@@ -135,16 +134,17 @@ void TreatSensors(Robot *robot) {
 
     for (i = 0; i < MAX_SENSOR_NUMBER; ++i) {
         sensor_value = wb_distance_sensor_get_value(sensors[i].device_tag);
-        if (sensor_value == 0.0)
-            speed_modifier = 0.0;
-        else {
+        if (sensor_value > 0.0) {
             distance = 5.0 * (1.0 - (sensor_value / MAX_SENSOR_VALUE));  // lookup table inverse.
+            printf("DS%d: %2.2f\t", i, distance);
             if (distance < MIN_DISTANCE)
                 speed_modifier = 1 - (distance / MIN_DISTANCE);
             else
                 speed_modifier = 0.0;
+
+            robot->LeftWheelWeight += sensors[i].wheel_weight[LEFT_WHEEL] * speed_modifier;
+            robot->RightWheelWeight += sensors[i].wheel_weight[RIGHT_WHEEL] * speed_modifier;
         }
-        robot->LeftWheelWeight += sensors[i].wheel_weight[LEFT_WHEEL] * speed_modifier;
-        robot->RightWheelWeight += sensors[i].wheel_weight[RIGHT_WHEEL] * speed_modifier;
     }
+    printf("LW: %2.2f, RW:%2.2f \n\r",robot->LeftWheelWeight,robot->RightWheelWeight);
 }
